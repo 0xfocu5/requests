@@ -194,8 +194,9 @@ func (obj *Client) request(ctx context.Context, option *RequestOption) (response
 		}
 	}
 	response.requestOption = option
+
 	//init headers and orderheaders,befor init ctxData
-	headers, err := option.initHeaders()
+	headers, err := option.initHeaders(response.requestOption.PreserveHeaderCase)
 	if err != nil {
 		return response, tools.WrapError(err, errors.New("tempRequest init headers error"), err)
 	}

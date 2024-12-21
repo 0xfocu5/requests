@@ -148,12 +148,13 @@ type RequestOption struct {
 	WsOption websocket.Option //websocket option
 	DisProxy bool             //force disable proxy
 
-	once      bool
-	client    *Client
-	requestId string
-	proxy     *url.URL
-	proxys    []*url.URL
-	isNewConn bool
+	once               bool
+	client             *Client
+	requestId          string
+	proxy              *url.URL
+	proxys             []*url.URL
+	isNewConn          bool
+	PreserveHeaderCase bool
 }
 
 func (obj *RequestOption) Client() *Client {

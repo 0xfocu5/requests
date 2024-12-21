@@ -18,7 +18,7 @@ func defaultHeaders() http.Header {
 	}
 }
 
-func (obj *RequestOption) initHeaders() (http.Header, error) {
+func (obj *RequestOption) initHeaders(preserveHeaderCase bool) (http.Header, error) {
 	if obj.Headers == nil {
 		return nil, nil
 	}
@@ -26,7 +26,7 @@ func (obj *RequestOption) initHeaders() (http.Header, error) {
 	case http.Header:
 		return headers.Clone(), nil
 	case *OrderMap:
-		head, order := headers.parseHeaders()
+		head, order := headers.parseHeaders(preserveHeaderCase)
 		obj.OrderHeaders = order
 		return head, nil
 	default:
@@ -37,7 +37,7 @@ func (obj *RequestOption) initHeaders() (http.Header, error) {
 		if dataMap == nil {
 			return nil, nil
 		}
-		head, _ := dataMap.parseHeaders()
+		head, _ := dataMap.parseHeaders(preserveHeaderCase)
 		return head, err
 	}
 }

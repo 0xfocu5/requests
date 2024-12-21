@@ -46,15 +46,23 @@ func (obj *OrderMap) Del(key string) {
 func (obj *OrderMap) Keys() []string {
 	return obj.keys
 }
-func (obj *OrderMap) parseHeaders() (map[string][]string, []string) {
+func (obj *OrderMap) parseHeaders(preserveHeaderCase bool) (map[string][]string, []string) {
 	head := make(http.Header)
 	for _, kk := range obj.keys {
 		if vvs, ok := obj.data[kk].([]any); ok {
 			for _, vv := range vvs {
-				head.Add(kk, fmt.Sprint(vv))
+				if preserveHeaderCase {
+					head[kk] = append(head[kk], fmt.Sprint(vv))
+				} else {
+					head.Add(kk, fmt.Sprint(vv))
+				}
 			}
 		} else {
-			head.Add(kk, fmt.Sprint(obj.data[kk]))
+			if preserveHeaderCase {
+				head[kk] = append(head[kk], fmt.Sprint(obj.data[kk]))
+			} else {
+				head.Add(kk, fmt.Sprint(obj.data[kk]))
+			}
 		}
 	}
 	return head, obj.keys
